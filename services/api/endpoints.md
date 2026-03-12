@@ -1,6 +1,6 @@
 # Analytics API — Endpoints
 
-Read-only API for current Alliance scores, history, and per-provider input breakdown (which inputs came from which provider). Data source: same store ingestion writes to.
+Read-only API for current Alliance scores, history, and per-rater input breakdown. Data source: same store ingestion writes to.
 
 ## Base
 
@@ -14,26 +14,26 @@ Read-only API for current Alliance scores, history, and per-provider input break
 List vaults with their strategy score and layer breakdown.
 
 - **Query:** Optional `chain_id`, `protocol_slug` to filter.
-- **Response:** Array of `{ entity_id, score_letter, score_numeric, layers: { asset: { score, security, operations, economics }, market: { ... }, vault: { ... } }, methodology_version, updated_at }`.
+- **Response:** Array of `{ entity_id, score, layers: { asset: { score, security, operations, economics }, market: { ... }, vault: { ... } }, methodology_version, updated_at }`.
 
 ### GET /vaults/:id
 
-One vault: strategy score, layer scores, axis breakdown, and per-provider inputs.
+One vault: strategy score, layer scores, axis breakdown, and per-rater inputs.
 
-- **Response:** `{ entity_id, score_letter, score_numeric, layers: { asset: { score, security, operations, economics }, market: { ... }, vault: { ... } }, methodology_version, updated_at, inputs_by_provider: { provider: { asset: { ... }, market: { ... }, vault: { ... } } }, composition?: { assets[], markets[] } }`.
+- **Response:** `{ entity_id, score, layers: { asset: { score, security, operations, economics }, market: { ... }, vault: { ... } }, methodology_version, updated_at, inputs_by_provider: { rater: { asset: { ... }, market: { ... }, vault: { ... } } }, composition?: { assets[], markets[] } }`.
 
 ### GET /vaults/:id/history
 
 Time series of the strategy score and layer scores for charts.
 
 - **Query:** Optional `from`, `to` (ISO date), `granularity` (e.g. day).
-- **Response:** Array of `{ timestamp, score_letter, score_numeric, layers: { asset: { ... }, market: { ... }, vault: { ... } } }`.
+- **Response:** Array of `{ timestamp, score, layers: { asset: { ... }, market: { ... }, vault: { ... } } }`.
 
 ### GET /vaults/:id/providers
 
-Current input breakdown by provider: which axis scores each provider supplied per layer.
+Current input breakdown by rater: which axis scores each rater supplied per layer.
 
-- **Response:** `{ entity_id, providers: { provider: { asset: { security, operations, economics }, market: { ... }, vault: { ... }, timestamp } } }`.
+- **Response:** `{ entity_id, providers: { rater: { asset: { security, operations, economics }, market: { ... }, vault: { ... }, timestamp } } }`.
 
 ## Entities
 

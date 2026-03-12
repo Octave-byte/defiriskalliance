@@ -199,32 +199,14 @@ Where `underlying_vaults_score` is the allocation-weighted average of the underl
 
 ## 5. Output Scale
 
-### 5.1 Letter Grades
-
-All Alliance scores use a single scale. The 0–10 numeric maps to letter grades:
-
-| Letter | Numeric Range | Interpretation |
-|--------|---------------|----------------|
-| A+ | 9.7 – 10.0 | Highest quality — minimal observable risk |
-| A  | 9.3 – 9.6  | Very high quality — negligible risk under normal conditions |
-| A- | 9.0 – 9.2  | High quality — very low risk |
-| B+ | 8.0 – 8.9  | Good quality — low risk, suitable for most allocators |
-| B  | 7.0 – 7.9  | Adequate quality — moderate risk, standard due diligence recommended |
-| B- | 6.0 – 6.9  | Below average — elevated risk |
-| C  | 4.0 – 5.9  | Speculative — material risk of loss |
-| D  | 2.0 – 3.9  | Highly speculative — significant risk of loss |
-| F  | 0.0 – 1.9  | Extreme risk — capital likely impaired |
-
-The letter grade is the primary display; the numeric value is used for tooling, history, and composition.
-
-### 5.2 Displaying Scores
+All scores are **0–10** numeric values (higher = safer). There is no letter-grade translation; the numeric score is the primary and only output.
 
 For each entity the Alliance publishes:
 
-- **Layer scores** (0–10 + letter) for each applicable layer.
+- **Layer scores** (0–10) for each applicable layer.
 - **Axis breakdown** (0–10) for Security, Operations, Economics within each layer.
-- **Strategy score** (0–10 + letter) — the overall score for the full strategy.
-- **Per-provider breakdown** — which providers contributed which axis scores (for transparency).
+- **Strategy score** (0–10) — the overall score for the full strategy.
+- **Per-rater breakdown** — which raters contributed which axis scores (for transparency).
 
 ---
 
@@ -274,7 +256,7 @@ For every entity and every scoring run, the Alliance stores which rater supplied
 - **Default-to-worse** — Missing, unverifiable, or opaque data results in the worst score (0). Opacity is a risk factor.
 - **Explainability** — Scores are accompanied by the axis breakdown and per-provider contributions so that any score can be fully audited.
 - **Versioning** — Every computed score is tagged with `methodology_version` (e.g. v2.1). Any change to axes, weights, or rules produces a new version; historical scores remain interpretable.
-- **Public methodology** — Axes, weights, merge rules, and grade bands are public and open to challenge.
+- **Public methodology** — Axes, weights, and merge rules are public and open to challenge.
 
 ---
 

@@ -4,7 +4,7 @@ When a strategy's overall score (composed from asset, market, and vault layers) 
 
 ## Rules
 
-See [rules.md](rules.md). Summary: alert if grade drop >= 2, or numeric drop > 2.0, or score below 4.0 (configurable).
+See [rules.md](rules.md). Summary: alert if numeric drop > 2.0 or score below 4.0 (configurable).
 
 ## Mechanism
 
