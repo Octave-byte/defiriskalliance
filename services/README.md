@@ -1,13 +1,12 @@
 # DeFi Risk Alliance — Operational Backend
 
-This directory contains the operational pipeline for the DeFi Risk Alliance: **ingestion** of provider data, **analytics API**, and **rating-decrease signals**. The stack is TBD (Node/TypeScript or Python); the layout is compatible with either.
+This directory contains the operational pipeline for the DeFi Risk Alliance: **ingestion** of rater data, **analytics API**, and **rating-decrease signals**. The stack is TBD (Node/TypeScript or Python); the layout is compatible with either.
 
 ## Structure
 
-- **[ingestion/](ingestion/)** — Fetch from provider APIs, adapt to our input schema, run our scoring formula, persist Alliance score and ingested inputs (and optional provenance). Run on a schedule (e.g. cron or manual).
-- **[api/](api/)** — Read-only API: **main metric** (vault strategy score) and **sub-component** (vault infra) per vault, history, and per-provider input breakdown. Long-running server.
-- **[signals/](signals/)** — After each ingestion (or dedicated job), compare latest vs previous **main metric** (vault strategy score); if it "decreases greatly" per [rules](signals/rules.md), emit webhook or notification.
-- **[shared/](shared/)** — Our input schema, entity IDs, and shared DB access. Ingestion and API both use this.
+- **[ingestion/](ingestion/)** — Fetch from rater APIs, adapt to the 3-axis schema (Security, Operations, Economics per layer), compute weighted-average scores, and persist results. Run on a schedule (e.g. cron or manual).
+- **[api/](api/)** — Read-only API: strategy score, layer scores, axis breakdown, and per-rater input provenance. Long-running server.
+- **[signals/](signals/)** — After each ingestion (or as a dedicated job), compare latest vs previous strategy score; if it "decreases greatly" per [rules](signals/rules.md), emit webhook or notification.
 
 ## Running
 
@@ -17,7 +16,7 @@ This directory contains the operational pipeline for the DeFi Risk Alliance: **i
 
 ## Storage
 
-For an operational MVP, use **SQLite** (file) or **Postgres** (hosted). Ingestion and API share the same DB. Keys and secrets (e.g. provider API keys) live in environment variables or a secrets manager, not in this repo.
+For an operational MVP, use **SQLite** (file) or **Postgres** (hosted). Ingestion and API share the same DB. Keys and secrets (e.g. rater API keys) live in environment variables or a secrets manager, not in this repo.
 
 ## Deployment
 

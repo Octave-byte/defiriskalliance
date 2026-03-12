@@ -1,64 +1,34 @@
-# DeFi Risk Alliance
+# DeFi Risk Alliance — Documentation
 
-The DeFi Risk Alliance is a credibly neutral initiative that rates the risk of DeFi yield strategies by aggregating scores from multiple independent external raters. Every strategy is decomposed into layers (Assets, Markets, Vaults) and evaluated on three axes (Security, Operations, Economics), producing a transparent, composable score on a 0–10 scale. The methodology, weights, and aggregation rules are fully open and challengeable.
+The DeFi Risk Alliance provides a credibly neutral, open-source methodology for scoring the risk of DeFi yield strategies. Scores are aggregated from multiple independent external raters and published transparently so that users, integrators, and institutions can make informed decisions.
 
-This repository contains the Alliance charter website, the scoring methodology documentation, and the operational backend for ingestion, scoring, and alerts.
+## Contents
 
-## Documentation
+- **[METHODOLOGY.md](docs/METHODOLOGY.md)** — The risk-scoring methodology: three layers (Assets, Markets, Vaults) scored on three axes (Security, Operations, Economics), composition modes, multi-rater aggregation, and the output scale.
 
-For the full methodology, market/vault definitions, and rater integration guide, see the [docs/](docs/) folder.
+- **[PROVIDER-INTEGRATION.md](docs/PROVIDER-INTEGRATION.md)** — How external raters can participate: submission format, delivery options, onboarding process, and how scores are aggregated.
 
-## Operational Backend
+For the operational pipeline (ingestion, API, alerts), see [services/](services/).
 
-Scoring ingestion, analytics API, and rating alerts live under [services/](services/). See [services/README.md](services/README.md) for how to run them.
-
-## Structure
+## Repository Structure
 
 ```
-├── index.html      # Main HTML file (styling and layout)
-├── content.md      # Manifesto content in Markdown (edit this!)
-├── assets/
-│   └── logo.png    # DeFi Risk Alliance logo
-├── docs/           # Methodology and provider integration (separate from website)
-│   ├── README.md
-│   ├── METHODOLOGY.md
-│   ├── MARKETS-VS-VAULTS.md
-│   └── PROVIDER-INTEGRATION.md
-├── services/       # Operational backend: ingestion, API, signals
-│   ├── README.md
+├── docs/                          # Methodology and rater integration
+│   ├── METHODOLOGY.md             # Scoring methodology (v2.1)
+│   ├── PROVIDER-INTEGRATION.md    # Rater onboarding guide
+│   └── README.md
+├── services/                      # Operational backend
 │   ├── ingestion/
+│   │   └── adapters/              # Per-rater adapters (mock.js, ...)
 │   ├── api/
-│   ├── signals/
-│   └── shared/
-└── README.md       # This file
+│   │   ├── endpoints.md           # API spec
+│   │   └── implementation/        # HTTP server
+│   └── signals/
+│       ├── rules.md               # Alert rules
+│       └── implementation/        # Alert logic
+├── index.html                     # Charter website (GitHub Pages)
+├── content.md                     # Manifesto content
+├── assets/
+│   └── logo.png
+└── README.md                      # This file
 ```
-
-## Editing Content
-
-To update the manifesto text, simply edit `content.md` directly on GitHub. The markdown will be automatically rendered on the site.
-
-### Formatting Guide
-
-- `# Heading` for the main title
-- `## Heading` for section titles
-- `### Heading` for subsections
-- `**bold text**` for emphasis
-- `> blockquote` for highlighted statements
-- `- item` for bullet lists
-- `---` separates the intro section from the "Read More" content
-
-## Updating Links
-
-To change the Forum, Docs, or Twitter links, edit `index.html` and find the `right-sidebar` section near the top of the `<body>`.
-
-## Deployment
-
-This site is designed for GitHub Pages:
-
-1. Push this repository to GitHub
-2. Go to Settings → Pages
-3. Select "Deploy from a branch"
-4. Choose `main` branch and `/ (root)` folder
-5. Save
-
-Your site will be live at `https://yourusername.github.io/repository-name/`
