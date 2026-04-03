@@ -2,7 +2,7 @@
 
 This document defines the DeFi Risk Alliance's methodology for scoring DeFi strategies. Every strategy is decomposed into up to three **layers** — Assets, Markets, and Vaults — each evaluated on three **axes** — Security, Operations, and Economics. Definitions of markets vs vaults are in [MARKETS-VS-VAULTS.md](MARKETS-VS-VAULTS.md).
 
-**Methodology version:** v2.1
+**Methodology version:** v2.2
 
 ---
 
@@ -255,8 +255,74 @@ For every entity and every scoring run, the Alliance stores which rater supplied
 
 - **Default-to-worse** — Missing, unverifiable, or opaque data results in the worst score (0). Opacity is a risk factor.
 - **Explainability** — Scores are accompanied by the axis breakdown and per-provider contributions so that any score can be fully audited.
-- **Versioning** — Every computed score is tagged with `methodology_version` (e.g. v2.1). Any change to axes, weights, or rules produces a new version; historical scores remain interpretable.
+- **Counterparty transparency** — Every scored strategy is accompanied by a Counterparty Exposure Map (Section 8) that catalogues all protocol dependencies, their battle-testedness, and operational maturity. The map is not a scoring input; it is a context layer that helps users interpret the score.
+- **Versioning** — Every computed score is tagged with `methodology_version` (e.g. v2.2). Any change to axes, weights, or rules produces a new version; historical scores remain interpretable.
 - **Public methodology** — Axes, weights, and merge rules are public and open to challenge.
+
+---
+
+## 8. Counterparty Exposure Map
+
+Every DeFi strategy depends on multiple protocols and external entities — from the asset issuer to the lending market, oracle provider, and vault manager. The **Counterparty Exposure Map** catalogues these dependencies so users can see exactly what they are trusting.
+
+The map is an **informational supplement**, not a scoring input. It accompanies every scored strategy to provide context that the numeric score alone cannot convey.
+
+### 8.1 Structure
+
+For each strategy, every protocol or counterparty touched at any layer is recorded with the following attributes:
+
+| Field | Description |
+|-------|-------------|
+| **Counterparty** | Protocol or entity name (e.g. Aave, Chainlink, Circle). |
+| **Layer** | Where the exposure occurs: `asset`, `market`, or `vault`. |
+| **Exposure** | `major` — the strategy's value flows directly through this counterparty. `minor` — indirect or auxiliary dependency (e.g. oracle, bridge). |
+| **Lindy** | Battle-testedness tier: `High`, `Medium`, or `Low` (see 8.2). |
+| **Operations** | Operational maturity tier: `High`, `Medium`, or `Low` (see 8.3). |
+
+Example for a Morpho USDC vault deployed on Aave:
+
+| Counterparty | Layer | Exposure | Lindy | Operations |
+|--------------|-------|----------|-------|------------|
+| Circle (USDC) | asset | major | High | Medium |
+| Aave v3 | market | major | High | High |
+| Morpho | vault | major | Medium | Medium |
+| Chainlink | market | minor | High | High |
+
+### 8.2 Lindy Score
+
+The Lindy score reflects how battle-tested a protocol is, derived from the combination of economic value secured (TVL) and time operating without a critical exploit or loss-of-funds incident.
+
+| Tier | Criteria |
+|------|----------|
+| **High** | TVL > $1 B **and** > 3 years without exploit or critical incident. |
+| **Medium** | TVL > $100 M **and** > 1 year without exploit. |
+| **Low** | TVL < $100 M, **or** < 1 year of operation, **or** has experienced an exploit. |
+
+The intuition: protocols that have secured large amounts of capital over long periods without incident have demonstrated resilience. A single exploit resets the clock and drops the tier regardless of TVL.
+
+### 8.3 Operations Level
+
+The Operations level captures a counterparty's governance maturity and decentralization posture, sourced from **DeFiScan** or equivalent operational assessment frameworks.
+
+| Tier | Reference | Criteria |
+|------|-----------|----------|
+| **High** | DeFiScan Stage 2+ or equivalent | Fully decentralized governance, immutable or long-timelock upgrades, on-chain verifiability of all parameters. |
+| **Medium** | DeFiScan Stage 1 or equivalent | Partial decentralization, governance with reasonable controls (multisig + timelock), public documentation. |
+| **Low** | DeFiScan Stage 0 or equivalent | Centralized control, upgradeable without meaningful timelock, limited transparency. |
+
+When DeFiScan coverage is unavailable, the Alliance may derive the tier from equivalent public assessments or from direct inspection of governance contracts and documentation.
+
+### 8.4 Relationship to the Score
+
+The Counterparty Exposure Map is explicitly **not** a scoring input. The 0–10 numeric score is computed solely from the axis-weighted methodology described in Sections 3–4.
+
+The map extends the score by providing **context**:
+
+- A strategy rated 7/10 where every counterparty has High Lindy and High Operations signals well-understood, battle-tested risk.
+- A strategy rated 7/10 where a major counterparty has Low Lindy signals emerging risk that users should weigh against the numeric score.
+- Concentration of multiple `major` exposures in a single counterparty highlights single-point-of-failure risk that the aggregate score may not surface on its own.
+
+The Alliance publishes the Counterparty Exposure Map alongside every scored entity so that users, integrators, and institutions can make fully informed decisions.
 
 ---
 
